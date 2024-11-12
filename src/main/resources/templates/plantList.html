@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Список растений</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="row">
+    <div class="d-flex"></div>
+    <div th:replace="fragments/sidebar.html :: sidebar" th:with="role=${role}, login=${login}"></div>
+
+    <div class="container">
+        <h1 class="my-4">Лекарственные растения</h1>
+
+        <div class="row">
+            <!-- Цикл для отображения каждой карточки растения -->
+            <div class="col-md-4" th:each="plant : ${plants}">
+                <div class="card text-bg-secondary mb-3" style="max-width: 18rem;">
+                    <div class="card-header"><h4 th:text="${plant.name}"></h4> </div>
+                    <div class="card-body">
+                        <p class="card-text">Место сбора: <span th:text="${plant.gatherngPlace}"></span></p>
+                        <p class="card-text">Противопоказания: <span th:text="${plant.contrand}"></span></p>
+                        <p class="card-text">Описание: <span th:text="${plant.descript}"></span></p>
+                    </div>
+                    <div class="card-footer bg-transparent ">
+                        <!-- Здесь можно, например, выводить ID пользователя или другие данные -->
+                        <small class="text-muted" th:text="'Пользователь: ' + ${plant.userLogin}"></small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

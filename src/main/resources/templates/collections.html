@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Медицинские сборы</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+</head>
+<body>
+
+<div class="row">
+<!--    <div class="d-flex"></div>-->
+    <div th:replace="fragments/sidebar.html :: sidebar" th:with="role=${role}, login=${login}"></div>
+
+
+<div class="container">
+    <h1>Медицинские сборы</h1>
+    <div class="row">
+        <!-- Loop through each collection -->
+        <div class="col-md-4" th:each="collection : ${collections}">
+            <div class="card text-bg-secondary mb-3">
+                <div class="card-header"><h4 th:text="${collection.name}"></h4> </div>
+                <div class="card-body">
+                    <!-- <p class="card-text"><strong>Количество растений:</strong> <span th:text="${collection.countPlant}"></span></p> -->
+
+                    <!-- Display plants within the collection -->
+                    <h6>Растения:</h6>
+                    <ul>
+                        <li th:each="composition : ${collection.compositionCollects}">
+                            <span th:text="${composition.plant.name}">Plant Name</span> <br>
+                            - <strong>Время сбора:</strong> <span th:text="${composition.timeGatherng}">Time</span> <br>
+                            - <strong>Часть:</strong> <span th:text="${composition.partPlant}">Part</span> <br>
+                        </li>
+                    </ul>
+
+                    <!-- Display diseases and methods related to the collection -->
+                    <h6>Болезнь:</h6>
+                    <ul>
+                        <li th:each="method : ${collection.methods}">
+                            <span th:text="${method.desease.name}">Disease</span> <br>
+                            - <strong>Применение:</strong> <span th:text="${method.metodApplic}">Method</span> <br>
+                            - <strong>Форма выпуска:</strong> <span th:text="${method.realiseForm}">Form</span> <br>
+                        </li>
+                    </ul>
+
+                    <div class="card-footer bg-transparent ">
+                        <!-- Здесь можно, например, выводить ID пользователя или другие данные -->
+                        <small class="text-muted" th:text="'Пользователь: ' + ${collection.user.login}"></small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

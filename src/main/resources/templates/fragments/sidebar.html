@@ -1,0 +1,28 @@
+<!-- Боковая панель с кнопками -->
+<div th:fragment="sidebar" xmlns:th="http://www.w3.org/1999/xhtml">
+    <nav class="navbar navbar-light" style="background-color: #e3f2fd; width: 100vw;">
+        <li class="nav-item mr-5">
+            <p>Вы вошли как: <span th:text="${login}"></span></p>
+        </li>
+        <a class="nav-link active" href="/collection">Главная</a>
+
+        <button class="btn btn-secondary mb-2" onclick="window.location.href='/plants'">Просмотр растений</button>
+        <button class="btn btn-secondary mb-2" onclick="window.location.href='/collections'">Просмотр сборов</button>
+
+        <!-- Условие для отображения элементов в зависимости от роли пользователя -->
+        <div th:if="${role == 'ОП'}">
+
+        </div>
+        <div th:if="${role == 'Э'}">
+            <button class="btn btn-primary mb-2" onclick="window.location.href='/manage-plants'">Управление растениями</button>
+            <button class="btn btn-primary mb-2" onclick="window.location.href='/manage-users'">Управление сборами</button>
+        </div>
+        <div th:if="${role == 'А'}">
+            <button class="btn btn-secondary mb-2" onclick="window.location.href='/view-plants'">Просмотр растений</button>
+            <button class="btn btn-success mb-2" onclick="window.location.href='/feedback'">Обратная связь</button>
+        </div>
+
+        <!-- Логика для отображения панели в зависимости от авторизации -->
+        <button class="btn btn-secondary mb-2" onclick="window.location.href='/'">Выйти</button>
+    </nav>
+</div>
