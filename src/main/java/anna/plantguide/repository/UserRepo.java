@@ -28,6 +28,14 @@ public class UserRepo {
         return query.uniqueResult();
     }
 
+    public Long findIdByLogin(String login) {
+        String hql = "SELECT u.id FROM User u WHERE u.login =:login";
+        Session session = entityManager.unwrap(Session.class);
+        Query<Long> query = session.createQuery(hql, Long.class);
+        query.setParameter("login", login);
+        return query.uniqueResult();
+    }
+
     public Optional<User> findByLogin(String login) {
         String hql = "FROM User u WHERE u.login =:login";
         Session session = entityManager.unwrap(Session.class);
@@ -38,9 +46,10 @@ public class UserRepo {
 
     public void registerUser(String login, String password, String fio, String role) {
         try {
-            String sql = "INSERT INTO users (login, password, fio, role) VALUES (?, ?, ?, ?)";
-            jdbcTemplate.update(sql, login, password, fio, role);
+            String sql = "Call public.insert_user(?, ?, ?, ?)";
+            jdbcTemplate.update(sql, login,role, password, fio);
         } catch (DataAccessException e) {
+            System.out.println("Ошибка базы данных: " + e.getMessage());
             throw new RuntimeException("Ошибка при регистрации пользователя", e);
         }
     }

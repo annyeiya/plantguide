@@ -14,8 +14,8 @@
 
         </div>
         <div th:if="${role == 'Э'}">
-            <button class="btn btn-primary mb-2" onclick="window.location.href='/manage-plants'">Управление растениями</button>
-            <button class="btn btn-primary mb-2" onclick="window.location.href='/manage-users'">Управление сборами</button>
+            <button class="btn btn-primary mb-2" onclick="window.location.href='/manage_plant'">Управление растениями</button>
+            <button class="btn btn-primary mb-2" onclick="window.location.href='/manage-collection'">Управление сборами</button>
         </div>
         <div th:if="${role == 'А'}">
             <button class="btn btn-secondary mb-2" onclick="window.location.href='/view-plants'">Просмотр растений</button>

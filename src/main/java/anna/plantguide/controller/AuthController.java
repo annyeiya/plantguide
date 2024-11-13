@@ -68,6 +68,7 @@ public class AuthController {
             model.addAttribute("error", "Пароли не совпадают");
             return "registration";
         }
+        //TODO
         System.out.println("aaaaaaaaaaaaaaaa");
 
         try {
