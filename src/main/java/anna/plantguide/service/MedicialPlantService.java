@@ -33,6 +33,10 @@ public class MedicialPlantService {
         return repository.findAll();
     }
 
+    public List<String> getAllPlantsName() {
+        return repository.findAllPlantName();
+    }
+
     public Optional<MedicialPlant> getPlantByName(String name) {
         String hql = "FROM MedicialPlant p WHERE p.name =:name";
         Session session = entityManager.unwrap(Session.class);
@@ -40,6 +44,39 @@ public class MedicialPlantService {
         query.setParameter("name", name);
         return query.getResultList().stream().findFirst();
     }
+
+    public Long findIdByName(String name) {
+        String hql = "SELECT p.id FROM MedicialPlant p WHERE p.name =:name";
+        Session session = entityManager.unwrap(Session.class);
+        Query<Long> query = session.createQuery(hql, Long.class);
+        query.setParameter("name", name);
+        return query.uniqueResult();
+    }
+
+    public void updateMedicialPlant(Long userId, Long id, String name, String contrand, String descript, String gatherngPlace) {
+        String sql = """
+        UPDATE medicial_plant
+        SET
+            name = COALESCE(?, name),
+            descript = COALESCE(?, descript),
+            gatherng_place = COALESCE(?, gatherng_place),
+            contrand = COALESCE(?, contrand),
+            id_user = ?
+        WHERE id = ?
+        """;
+
+        try {
+            int rowsAffected =  jdbcTemplate.update(sql, name, descript, gatherngPlace, contrand, userId.intValue(), id);
+
+            if (rowsAffected == 0) {
+                throw new RuntimeException("Растение с указанным id не найдено: " + id);
+            }
+        } catch (DataAccessException e) {
+            System.out.println("Ошибка базы данных: " + e.getMessage());
+            throw new RuntimeException("Ошибка при обновлении данных растения", e);
+        }
+    }
+
 
     public void addMedicalPlant(String name, String contrand, Long userId, String descript, String gatherngPlace) {
         String sql = "CALL public.insert_medcal_plant(?, ?, ?, ?, ?)";
