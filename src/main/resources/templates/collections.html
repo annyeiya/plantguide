@@ -42,6 +42,11 @@
                         </li>
                     </ul>
 
+                    <div class="text-center">
+                        <a th:href="@{/reviews/{name}(name=${collection.name})}" class="btn btn-info">Отзывы</a>
+                    </div>
+                    <br>
+
                     <div class="card-footer bg-transparent ">
                         <!-- Здесь можно, например, выводить ID пользователя или другие данные -->
                         <small class="text-muted" th:text="'Пользователь: ' + ${collection.user.login}"></small>

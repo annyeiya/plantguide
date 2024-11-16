@@ -43,6 +43,7 @@
                         <option th:value="${l}" th:text="${l}"></option>
                     </th:block>
                 </select>
+                <button type="submit" class="btn btn-warning mb-2" name="action" value="delete">Удалить</button>
                 <hr>
 
                 <h2>Добавление пользователя</h2>
@@ -78,7 +79,7 @@
                     <p th:text="${message}"></p>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Зарегистрировать</button>
+                <button type="submit" class="btn btn-primary" name="action" value="submit">Зарегистрировать</button>
             </form>
             <br>
             <div style="height: 50px;"></div>

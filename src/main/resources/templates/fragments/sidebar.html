@@ -4,22 +4,23 @@
         <li class="nav-item mr-5">
             <p>Вы вошли как: <span th:text="${login}"></span></p>
         </li>
-        <a class="nav-link active" href="/collection">Главная</a>
 
         <button class="btn btn-secondary mb-2" onclick="window.location.href='/plants'">Просмотр растений</button>
         <button class="btn btn-secondary mb-2" onclick="window.location.href='/collections'">Просмотр сборов</button>
 
         <!-- Условие для отображения элементов в зависимости от роли пользователя -->
         <div th:if="${role == 'ОП'}">
-
+            <button class="btn btn-secondary mb-2" onclick="window.location.href='/addReview'">Оставть отзыв</button>
         </div>
         <div th:if="${role == 'Э'}">
             <button class="btn btn-primary mb-2" onclick="window.location.href='/manage_plant'">Управление растениями</button>
             <button class="btn btn-primary mb-2" onclick="window.location.href='/manage_collection'">Управление сборами</button>
+            <button class="btn btn-primary mb-2" onclick="window.location.href='/manage_disease'">Управление болезнями</button>
+            <button class="btn btn-secondary mb-2" onclick="window.location.href='/addReview'">Оставть отзыв</button>
         </div>
         <div th:if="${role == 'А'}">
             <button class="btn btn-primary mb-2" onclick="window.location.href='/manage_user'">Управление пользователями</button>
-            <button class="btn btn-success mb-2" onclick="window.location.href='/feedback'">Обратная связь</button>
+            <button class="btn btn-success mb-2" onclick="window.location.href='/delete_page'">Чистка данных</button>
         </div>
 
         <!-- Логика для отображения панели в зависимости от авторизации -->

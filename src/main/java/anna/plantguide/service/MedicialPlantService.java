@@ -73,10 +73,9 @@ public class MedicialPlantService {
             }
         } catch (DataAccessException e) {
             System.out.println("Ошибка базы данных: " + e.getMessage());
-            throw new RuntimeException("Ошибка при обновлении данных растения", e);
+            throw new RuntimeException(e.getMessage(), e);
         }
     }
-
 
     public void addMedicalPlant(String name, String contrand, Long userId, String descript, String gatherngPlace) {
         String sql = "CALL public.insert_medcal_plant(?, ?, ?, ?, ?)";
@@ -84,7 +83,18 @@ public class MedicialPlantService {
             jdbcTemplate.update(sql, name, contrand, userId.intValue(), descript, gatherngPlace);
         } catch (DataAccessException e) {
             System.out.println("Ошибка базы данных: " + e.getMessage());
-            throw new RuntimeException("Ошибка при добавление расстения", e);
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
+
+    public void deleteMedicalPlant(String name) {
+        Long id = findIdByName(name);
+        String sql = "DELETE FROM medicial_plant WHERE id = ?";
+        try {
+            jdbcTemplate.update(sql, id);
+        } catch (DataAccessException e) {
+            System.out.println("Ошибка базы данных: " + e.getMessage());
+            throw new RuntimeException(e.getMessage(), e);
         }
     }
 }

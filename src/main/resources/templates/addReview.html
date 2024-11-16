@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>addReview</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script>
+       // Функция для обновления значения, отображаемого на странице
+       function updateRangeValue(value) {
+           document.getElementById('range-value').textContent = 'Значение: ' + value;
+       }
+    </script>
+</head>
+<body>
+<div class="row">
+    <div th:replace="fragments/sidebar.html :: sidebar" th:with="role=${role}, login=${login}"></div>
+
+    <div class="container mt-5" xmlns:th="http://www.w3.org/1999/xhtml">
+        <div style="text-align: center">
+            <form action="/addReview" method="post" >
+
+                <h2>Оставьте отзыв</h2>
+
+                <div class="form-group">
+                    <label for="collection">Название сбора:</label>
+                    <select id="collection" name="collection" class="form-control" required>
+                        <option value="">Выберите сбор</option>
+                        <!-- Перебираем список болезней и создаем option для каждого -->
+                        <th:block th:each="collection : ${collections}">
+                            <option th:value="${collection}" th:text="${collection}"></option>
+                        </th:block>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="estimation">Оценка:</label>
+                    <input type="range" class="form-control-range" id="estimation" name="estimation" min="1" max="10" value="5"
+                                            oninput="updateRangeValue(this.value)">
+                    <p id="range-value">Значение: 5</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="textReview">Ваш отзыв:</label>
+                    <input type="text" class="form-control" id="textReview" name="textReview"><br>
+                </div>
+
+
+                <div th:if="${error}" class="alert alert-danger" role="alert">
+                    <p th:text="${error}"></p>
+                </div>
+                <div th:if="${message}" class="alert alert alert-success" role="alert">
+                    <p th:text="${message}"></p>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Зарегистрировать</button>
+
+            </form>
+            <br>
+            <div style="height: 50px;"></div>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>

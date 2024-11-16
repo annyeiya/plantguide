@@ -28,5 +28,8 @@ public class MedicalCollection {
 
     @OneToMany(mappedBy = "collection")
     private List<Method> methods;
+
+    @OneToMany(mappedBy = "collection")
+    private List<Review> reviews;
 }
 

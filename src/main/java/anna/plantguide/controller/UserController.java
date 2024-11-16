@@ -35,6 +35,7 @@ public class UserController {
 
     @PostMapping("/manage_user")
     public String addUser(
+            @RequestParam("action") String action,
             @RequestParam(value = "oldname", required = false) String oldname,
             @RequestParam("login") String login,
             @RequestParam("password") String password,
@@ -42,14 +43,14 @@ public class UserController {
             @RequestParam(value = "fio", required = false) String fio,
             HttpSession session,
             Model model) {
-        if (Objects.equals(oldname, "")) {
+        if (Objects.equals(oldname, "") && Objects.equals(action, "submit")) {
             try {
                 userRepo.registerUser(login, password, fio, role);
                 model.addAttribute("message", "Пользователь успешно добавлен!");
             } catch (Exception e) {
                 model.addAttribute("error", "Ошибка добавления пользователя: " + e.getMessage());
             }
-        } else {
+        } else if (!Objects.equals(oldname, "") && Objects.equals(action, "submit")) {
             login = login.isEmpty() ? null : login;
             password = password.isEmpty() ? null : password;
             role = role.isEmpty() ? null : role;
@@ -60,6 +61,14 @@ public class UserController {
                 model.addAttribute("message", "Пользователь успешно обновлен!");
             } catch (Exception e) {
                 model.addAttribute("error", "Ошибка обновления пользователя: " + e.getMessage());
+            }
+        } else if (!Objects.equals(oldname, "") && Objects.equals(action, "delete")) {
+            try {
+                Long userId = userRepo.findIdByLogin(oldname);
+                userRepo.deleteUser(userId);
+                model.addAttribute("message", "Пользователь успешно удален!");
+            } catch (Exception e) {
+                model.addAttribute("error", "Ошибка удаления пользователя: " + e.getMessage());
             }
         }
         return getUser(session, model);

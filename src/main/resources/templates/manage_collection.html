@@ -36,8 +36,14 @@
             <form action="/manage_collection" method="post" >
                 <hr>
                 <h4>Если вы хотите обновить сбор введите его название и после заполните поля которые хотите обновить</h4>
-                <label for="oldname">Название обновляемого расстения:</label>
-                <input type="text" id="oldname" name="oldname" oninput="toggleRequiredFields()">
+                <label for="oldname">Название обновляемого сбора:</label>
+                <select id="oldname" name="oldname" class="form-control" onchange="toggleRequiredFields()">
+                    <option value="">Выберите сбор</option>
+                    <!-- Перебираем список болезней и создаем option для каждого -->
+                    <th:block th:each="name : ${names}">
+                        <option th:value="${name}" th:text="${name}"></option>
+                    </th:block>
+                </select>
                 <hr>
 
                 <h2>Добавление сбора</h2>

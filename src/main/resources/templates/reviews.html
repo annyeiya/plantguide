@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Отзывы о сборе</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+</head>
+<body>
+<div class="row">
+    <div th:replace="fragments/sidebar.html :: sidebar" th:with="role=${role}, login=${login}"></div>
+
+
+<div class="container">
+    <h1>Отзывы о сборе</h1>
+
+    <!-- Отображение всех отзывов -->
+    <div class="list-group">
+        <div th:each="review : ${reviews}" class="list-group-item">
+            <h5 th:text="${review.user.login}"></h5>
+            <p th:text="${review.textReview}"></p>
+            <p><strong>Оценка: </strong><span th:text="${review.estimation}"></span></p>
+        </div>
+    </div>
+
+</div>
+
+</div>
+</body>
+</html>

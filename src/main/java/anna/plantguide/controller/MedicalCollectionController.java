@@ -20,10 +20,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 public class MedicalCollectionController {
@@ -55,6 +52,9 @@ public class MedicalCollectionController {
         model.addAttribute("role", userService.getUserRole(userSessionLogin));
         model.addAttribute("login", userSessionLogin);
 
+        List<String> CollectionNames = collectionService.getAllCollectionName();
+        model.addAttribute("names", CollectionNames);
+
         Map<Long, String> plantIdName = new HashMap<>();
         for (MedicialPlant plant : plantService.getAllPlants()) {
             plantIdName.put(plant.getId(), plant.getName());
@@ -73,14 +73,14 @@ public class MedicalCollectionController {
             @RequestParam("name") String name,
             @RequestParam("desease") String desease,
             @RequestParam("metodApplic") String metodApplic,
-            @RequestParam("countPlant") Integer countPlant,
-            @RequestParam(value = "releaseForm",required = false) String releaseForm,
+            @RequestParam(value = "countPlant") String countPlant,
+            @RequestParam(value = "releaseForm", required = false) String releaseForm,
             @RequestParam("plantDetail") String plantDetail,
             HttpSession session,
             Model model) {
 
-        //if (oldname == null) {
-        System.out.println(plantDetail);
+        if (Objects.equals(oldname, "")) {
+            System.out.println(plantDetail);
             try {
 //                JSONArray plantArray = new JSONArray();
 //                for (PlantDetail detail : plantDetail) {
@@ -94,18 +94,31 @@ public class MedicalCollectionController {
 //                    plantObject.put("part_plant", detail.getPartPlant());
 //                    plantArray.put(plantObject);
 //                }
+                Integer countPlantint = Integer.parseInt(countPlant);
                 String userLogin = (String) session.getAttribute("userLogin");
                 Long userId = userRepo.findIdByLogin(userLogin);
                 Long deseaseId = diseaseService.findIdByName(desease);
 
-                collectionService.addCollection(userId, name, deseaseId, metodApplic, releaseForm, countPlant, plantDetail);
+                collectionService.addCollection(userId, name, deseaseId, metodApplic, releaseForm, countPlantint, plantDetail);
                 model.addAttribute("message", "Сбор успешно добавлено!");
             } catch (Exception e) {
                 model.addAttribute("error", "Ошибка добавления сбора: " + e.getMessage());
             }
-        //} else {
-            //TODO update
-        //}
+        } else {
+            try {
+                Integer countPlantint = countPlant.isEmpty() ? 0 : Integer.parseInt(countPlant);
+                plantDetail = plantDetail.isEmpty() ? "[]" : plantDetail;
+                String userLogin = (String) session.getAttribute("userLogin");
+                Long userId = userRepo.findIdByLogin(userLogin);
+                Long deseaseId = diseaseService.findIdByName(desease);
+                Long idCollection = collectionService.findIdByName(oldname);
+                collectionService.updateCollection(idCollection, userId, name, deseaseId,
+                                metodApplic, releaseForm, countPlantint, plantDetail);
+                model.addAttribute("message", "Сбор успешно обновлен!");
+            } catch (Exception e) {
+                model.addAttribute("error", "Ошибка обновления сбора: " + e.getMessage());
+            }
+        }
         return getManagePlant(session, model);
     }
 }

@@ -84,4 +84,18 @@ public class UserRepo {
             throw new RuntimeException("Ошибка при обновлении данных пользователя", e);
         }
     }
+
+    public void deleteUser(Long id) {
+        String sql = "DELETE FROM users WHERE id = ?";
+        try {
+            int rowsAffected = jdbcTemplate.update(sql, id.intValue());
+
+            if (rowsAffected == 0) {
+                throw new RuntimeException("Пользователь с указанным id не найден: " + id);
+            }
+        } catch (DataAccessException e) {
+            System.out.println("Ошибка базы данных: " + e.getMessage());
+            throw new RuntimeException("Ошибка при удаление данных пользователя", e);
+        }
+    }
 }
