@@ -68,8 +68,6 @@ public class AuthController {
             model.addAttribute("error", "Пароли не совпадают");
             return "registration";
         }
-        System.out.println("aaaaaaaaaaaaaaaa");
-
         try {
             userService.registerUser(login, password, fio, "ОП");
             model.addAttribute("message", "Вы успешно зарегистрированы!");

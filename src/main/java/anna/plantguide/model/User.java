@@ -30,4 +30,7 @@ public class User {
 
     @OneToMany
     private List<MedicalCollection> medicalCollections;
+
+    @OneToMany
+    private List<Review> reviews;
 }
