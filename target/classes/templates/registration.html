@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5" xmlns:th="http://www.w3.org/1999/xhtml">
+    <div style="text-align: center">
+
+        <h2>Добро пожаловать, пожалуйста введите все необходимые данные</h2>
+        <form action="/registration" method="post">
+            <div class="form-group">
+                <label for="login">Логин</label>
+                <input type="text" class="form-control" id="login" name="login" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Пароль</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+
+            <div class="form-group">
+                <label for="confirmPassword">Подтвердите пароль</label>
+                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword">
+            </div>
+            <div class="form-group">
+                <label for="fio">ФИО</label>
+                <input type="text" class="form-control" id="fio" name="fio">
+            </div>
+
+            <!-- Вывод сообщения об ошибке, если оно есть -->
+            <div th:if="${error}" class="alert alert-danger" role="alert">
+                <p th:text="${error}"></p>
+            </div>
+            <div th:if="${message}" class="alert alert alert-success" role="alert">
+                <p th:text="${message}"></p>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+        </form>
+        <br>
+        <div style="height: 50px;"></div>
+
+    </div>
+</div>
+</body>
+</html>

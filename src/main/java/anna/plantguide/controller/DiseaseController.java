@@ -21,8 +21,6 @@ public class DiseaseController {
     private DiseaseService diseaseService;
     @Autowired
     private UserService userService;
-    @Autowired
-    private UserRepo userRepo;
 
     @GetMapping("/manage_disease")
     public String getDisease(HttpSession session, Model model) {

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>manage_collection</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script>
+        function toggleRequiredFields() {
+            const oldname = document.getElementById("oldname").value;
+            const nameField = document.getElementById("name");
+            const deseaseField = document.getElementById("desease");
+            const metodApplicFied = document.getElementById("metodApplic");
+            const countPlantFied = document.getElementById("countPlant");
+
+
+            if (oldname.trim() === "") {
+                nameField.setAttribute("required", "required");
+                deseaseField.setAttribute("required", "required");
+                metodApplicFied.setAttribute("required", "required");
+                countPlantFied.setAttribute("required", "required");
+            } else {
+                nameField.removeAttribute("required");
+                deseaseField.removeAttribute("required");
+                metodApplicFied.removeAttribute("required");
+                countPlantFied.removeAttribute("required");
+            }
+        }
+    </script>
+</head>
+<body>
+<div class="row">
+    <div th:replace="fragments/sidebar.html :: sidebar" th:with="role=${role}, login=${login}"></div>
+
+    <div class="container mt-5" xmlns:th="http://www.w3.org/1999/xhtml">
+        <div style="text-align: center">
+            <form action="/manage_collection" method="post" >
+                <hr>
+                <h4>Если вы хотите обновить сбор введите его название и после заполните поля которые хотите обновить</h4>
+                <label for="oldname">Название обновляемого сбора:</label>
+                <select id="oldname" name="oldname" class="form-control" onchange="toggleRequiredFields()">
+                    <option value="">Выберите сбор</option>
+                    <!-- Перебираем список болезней и создаем option для каждого -->
+                    <th:block th:each="name : ${names}">
+                        <option th:value="${name}" th:text="${name}"></option>
+                    </th:block>
+                </select>
+                <hr>
+
+                <h2>Добавление сбора</h2>
+
+                <div class="form-group">
+                    <label for="name">Название</label>
+                    <input type="text" class="form-control" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="desease">Болезнь от которой этот сбор:</label>
+<!--                    <input type="text" class="form-control" id="desease" name="desease" required><br>-->
+                    <select id="desease" name="desease" class="form-control" required>
+                        <option value="">Выберите болезнь</option>
+                        <!-- Перебираем список болезней и создаем option для каждого -->
+                        <th:block th:each="disease : ${diseases}">
+                            <option th:value="${disease}" th:text="${disease}"></option>
+                        </th:block>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="metodApplic">Метод применения:</label>
+                    <input type="text" class="form-control" id="metodApplic" name="metodApplic" required><br>
+                </div>
+                <div class="form-group">
+                    <label for="releaseForm">Форма выпуска:</label>
+                    <input type="text" class="form-control" id="releaseForm" name="releaseForm"><br>
+                </div>
+
+                <div class="form-group">
+                    <label for="countPlant">Колличество расстений в сборе:</label>
+                    <input type="text" class="form-control" id="countPlant" name="countPlant" required><br>
+                </div>
+
+                <select>
+                    <option value="" disabled selected>Просмотр id растений</option>
+                    <!-- Заполнение с сервера: список растений -->
+                    <option th:each="entry : ${plantIdName}"
+                            th:value="${entry.key}"
+                            th:text="${entry.value} + ' - ' + ${entry.key}">Plant Name</option>
+                </select>
+
+                <div class="form-group">
+                    <label for="description">Расстения ввиде json, потому что:</label>
+                    <textarea id="description" name="plantDetail" class="form-control" style="height: auto;" placeholder='[{"id_plant": 1, "time_gatherng": "12:00", "part_plant": "лист"},
+                    {"id_plant": 2}]'></textarea>
+                </div>
+
+                <!--                <div id="plantDetail">-->
+<!--                    &lt;!&ndash; Динамическое добавление полей для каждого растения &ndash;&gt;-->
+<!--                </div>-->
+
+                <!-- Вывод сообщения об ошибке, если оно есть -->
+                <div th:if="${error}" class="alert alert-danger" role="alert">
+                    <p th:text="${error}"></p>
+                </div>
+                <div th:if="${message}" class="alert alert alert-success" role="alert">
+                    <p th:text="${message}"></p>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Зарегистрировать</button>
+
+                <input type="hidden" id="plantDetailsJson" name="plantDetailsJson">
+            </form>
+            <br>
+            <div style="height: 50px;"></div>
+
+<!--            <script>-->
+<!--                document.getElementById('countPlant').addEventListener('input', function() {-->
+<!--                    const count = parseInt(this.value);-->
+<!--                    const plantDetails = document.getElementById('plantDetail');-->
+<!--                    plantDetails.innerHTML = '';-->
+
+<!--                    for (let i = 0; i < count; i++) {-->
+<!--                        const div = document.createElement('div');-->
+<!--                        div.innerHTML = `-->
+<!--                            <label>Растение ${i + 1}:</label>-->
+<!--                            <input type="text" id="plantDetail[${i}].name_plant" name="plantDetail[${i}].name_plant" placeholder="Название" required>-->
+<!--                            <input type="time" id="plantDetail[${i}].time_gatherng" name="plantDetail[${i}].time_gatherng" placeholder="Время сбора">-->
+<!--                            <input type="text" id="plantDetail[${i}].part_plant" name="plantDetail[${i}].part_plant" placeholder="Часть растения">-->
+<!--                        `;-->
+<!--                        plantDetails.appendChild(div);-->
+<!--                    }-->
+<!--                });-->
+<!--            </script>-->
+
+        </div>
+    </div>
+</div>
+</body>
+</html>

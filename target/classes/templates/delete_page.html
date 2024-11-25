@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <title>delete_page</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+<div class="row">
+  <div th:replace="fragments/sidebar.html :: sidebar" th:with="role=${role}, login=${login}"></div>
+
+  <div class="container mt-5" xmlns:th="http://www.w3.org/1999/xhtml">
+    <div style="text-align: center">
+      <form action="/delete_page" method="post">
+
+        <h2>Отчистка данных</h2>
+
+        <hr>
+        <label for="plant">Удалить расстение:</label>
+        <select id="plant" name="plant" class="form-control">
+          <option value="">Выберите название расстения</option>
+          <!-- Перебираем список болезней и создаем option для каждого -->
+          <th:block th:each="plant: ${plantNames}">
+            <option th:value="${plant}" th:text="${plant}"></option>
+          </th:block>
+        </select>
+        <button type="submit" class="btn btn-warning mb-2" name="action" value="plant">Удалить</button>
+        <hr>
+
+        <hr>
+        <label for="collection">Удалить сбор:</label>
+        <select id="collection" name="collection" class="form-control">
+          <option value="">Выберите название сбора</option>
+          <!-- Перебираем список болезней и создаем option для каждого -->
+          <th:block th:each="collection: ${collectionNames}">
+            <option th:value="${collection}" th:text="${collection}"></option>
+          </th:block>
+        </select>
+        <button type="submit" class="btn btn-warning mb-2" name="action" value="collection">Удалить</button>
+        <hr>
+
+        <hr>
+        <label for="disease">Удалить болезнь:</label>
+        <select id="disease" name="disease" class="form-control">
+          <option value="">Выберите название болезни</option>
+          <!-- Перебираем список болезней и создаем option для каждого -->
+          <th:block th:each="disease: ${diseaseNames}">
+            <option th:value="${disease}" th:text="${disease}"></option>
+          </th:block>
+        </select>
+        <button type="submit" class="btn btn-warning mb-2" name="action" value="disease">Удалить</button>
+        <hr>
+
+        <!-- Вывод сообщения об ошибке, если оно есть -->
+        <div th:if="${error}" class="alert alert-danger" role="alert">
+          <p th:text="${error}"></p>
+        </div>
+        <div th:if="${message}" class="alert alert alert-success" role="alert">
+          <p th:text="${message}"></p>
+        </div>
+
+      </form>
+      <br>
+      <div style="height: 50px;"></div>
+
+    </div>
+  </div>
+</div>
+</body>
+</html>

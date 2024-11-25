@@ -28,8 +28,6 @@ public class DeleteController {
     private MedicialPlantService plantService;
     @Autowired
     private UserService userService;
-    @Autowired
-    private UserRepo userRepo;
 
     @GetMapping("/delete_page")
     public String getDeletePage(HttpSession session, Model model) {

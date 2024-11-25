@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  db:
+    container_name: "postgres_db"
+    image: postgres:15-alpine   
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=plantguide
+      - POSTGRES_PORT=5432
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/pgdata
+    ports:
+      - "5432:5432"
+    restart: always
+
+  pgadmin:
+    container_name: "pgadmin"
+    image: dpage/pgadmin4  
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=root
+    volumes:
+      - data_pgadmin:/var/lib/pgadmin
+    ports:
+      - "8000:80"
+    restart: always
+
+  app:
+    container_name: "plantguide_app"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/plantguide
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    restart: always
+
+volumes:
+  postgres_data:
+  data_pgadmin:

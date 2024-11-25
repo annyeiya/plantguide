@@ -44,7 +44,7 @@ public class ReviewController {
     public String postAddReview(
             @RequestParam("collection") String collection,
             @RequestParam("estimation") Integer estimation,
-            @RequestParam(value = "textReview", required = false) String textReview, @RequestParam(value = "gatherngPlace", required = false) String gatherngPlace,
+            @RequestParam(value = "textReview", required = false) String textReview,
             HttpSession session,
             Model model) {
         String userSessionLogin = (String) session.getAttribute("userLogin");

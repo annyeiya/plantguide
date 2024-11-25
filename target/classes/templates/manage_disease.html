@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>manage_disease</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script>
+        function toggleRequiredFields() {
+            const oldname = document.getElementById("oldname").value;
+            const nameField = document.getElementById("name");
+
+
+            if (oldname.trim() === "") {
+                nameField.setAttribute("required", "required");
+            } else {
+                nameField.removeAttribute("required");
+            }
+        }
+    </script>
+</head>
+<body>
+<div class="row">
+    <div th:replace="fragments/sidebar.html :: sidebar" th:with="role=${role}, login=${login}"></div>
+
+    <div class="container mt-5" xmlns:th="http://www.w3.org/1999/xhtml">
+        <div style="text-align: center">
+            <form action="/manage_disease" method="post" >
+                <hr>
+                <h4>Если вы хотите обновить болезнь введите ее название и после заполните поля которые хотите обновить</h4>
+                <label for="oldname">Название обновляемой болезни:</label>
+                <select id="oldname" name="oldname" class="form-control" onchange="toggleRequiredFields()">
+                    <option value="">Выберите болезнь</option>
+                    <!-- Перебираем список болезней и создаем option для каждого -->
+                    <th:block th:each="name : ${names}">
+                        <option th:value="${name}" th:text="${name}"></option>
+                    </th:block>
+                </select>
+                <hr>
+
+                <h2>Добавление болезни</h2>
+
+                <div class="form-group">
+                    <label for="name">Название</label>
+                    <input type="text" class="form-control" id="name" name="name" required>
+                </div>
+                <!-- Вывод сообщения об ошибке, если оно есть -->
+                <div th:if="${error}" class="alert alert-danger" role="alert">
+                    <p th:text="${error}"></p>
+                </div>
+                <div th:if="${message}" class="alert alert alert-success" role="alert">
+                    <p th:text="${message}"></p>
+                </div>
+                <button type="submit" class="btn btn-primary">Зарегистрировать</button>
+
+            </form>
+            <br>
+            <div style="height: 50px;"></div>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>
